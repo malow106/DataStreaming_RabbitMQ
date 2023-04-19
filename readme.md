@@ -19,7 +19,7 @@ Pour installer ce projet il vous faudra suivre les étape suivantes :
 
 Cloner ce repo GitHub :
 ```bash
-git clone https://github.com/malo-paris/DataStreaming_RabbitMQ
+git clone https://github.com/malow106/DataStreaming_RabbitMQ
 ```
 
 En ligne de commande, se placer dans le dossier du projet
@@ -29,15 +29,15 @@ cd DataStreaming_RabbitMQ
 
 (Facultatif) Il est fortement conseillé de créer un environnement virtuel permettant d'isoler les packages python nécéssaires du reste de votre machine.
 ```bash
-python venv venv
+virtualenv venv
 ``` 
 puis activer cet environnement :
 ```bash
-venv/Scripts/activate (windows)
+venv\Scripts\activate (windows)
 source venv/bin/activate (linux/Macos)
 ``` 
 
-puis activer cet environnement :
+puis installer les packages python :
 ```bash
 pip install -r requirements.txt
 ``` 
@@ -87,15 +87,24 @@ Une fois les 3 services ci-dessus lancés, il faut suivre les étapes suivantes.
 #### 1- Lancer le server RabbitMR
 
 Exécuter le fichier python `server.py` afin de créer une connexion au serveur via un `channel` pour qu'il soit utilisable par les `producers` et `consummer`.
+```bash
+python server.py
+```
+
 
 #### 2- Simuler les logs produit par le server web
 
 Exécuter le fichier python `logs-producer.py` afin de créer un `exchange` et des `queue`. Cela permet ensuite de publier les logs dans les `queue` et de les aiguiller correctement à l'aide de `routing_key`.
+```bash
+python logs-producer.py
+```
 
 #### 3- Consommer les logs et les pousser dans notre base SQL
 
 Exécuter le fichier python `consumer.py` afin de consommer les logs en attente dans nos deux `queue`. Les logs seront alors traités en FIFO (First In First Out) jusqu'a ce que les 2 `queue` soient vide.
-
+```bash
+python consumer.py
+```
 Pour chaque queue, nous applicons des traitements particulier avant de pousser un log dans la base de données :
 - `process_msg_data_clean` : permet de 'parser' notre log à l'aide de fonctions et d'expressions régulière (RegEx) pour le stocker de manière structurée en base. Il pourra ainsi être facilement à des fins d'analyse, dashboarding ou ML.
 - `process_raw_message` : permet de stoker notre log brut afin de ne pas le perdre.
