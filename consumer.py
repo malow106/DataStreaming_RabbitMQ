@@ -14,7 +14,6 @@ from server import channel
 # consume messages from queues
 channel.basic_consume(queue="data-clean",on_message_callback=process_msg_data_clean, auto_ack=True) 
 
-
 channel.basic_consume(queue="data-lake",on_message_callback=process_raw_message, auto_ack=True)
 
 

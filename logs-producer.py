@@ -1,7 +1,7 @@
 from server import channel
 from tqdm import tqdm
 
-logs_files = open("class-4/assets/web-server-nginx_dev.log", "r")
+logs_files = open("assets/web-server-nginx_dev.log", "r")
 
 QUEUES = [
     {
@@ -29,5 +29,3 @@ for queue in QUEUES:
 for log_row in logs_files:
     channel.basic_publish(exchange=EXCHANGE_NAME, routing_key="new_log", body=log_row)
     print(f"[x] New log `{log_row}` in topic `{queue['routing_key']}`")
-
-#https://www.rabbitmq.com/tutorials/tutorial-one-python.html
