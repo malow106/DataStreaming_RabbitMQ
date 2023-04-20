@@ -6,6 +6,8 @@ Ce projet à but pédagogique à pour but de mettre en pratique les notions d'OR
 
 L'objectif est de simuler un scénario réel consistant à récupérer les logs d'un server web, les traiter et les stocker dans une base de données, et ce en temps réel.
 
+![Alt text](img/img_app.png)
+
 
 ## Prérequis
 
@@ -121,8 +123,23 @@ Les 2 tables de la base sont représentées dans le fichier `\functions\models.p
 
 Il s'agit de la dernière étape de notre flux de données : les données consommées sont ainsi poussés dans notre base MySQL.
 
+# Résultats (sur échantillon de 100 logs)
 
-## Documentation et ressources utiles
+## RabbitMQ interface
+Visualisation de la publication des logs dans la queue (front montant) et de leur consommation (front descandant)
+
+![Alt text](img/img_rabbit1.png)
+
+![Alt text](img/img_rabbit2.png)
+
+Visualisation des logs dans PHPMyAdmin dans les 2 tables
+
+![Alt text](img/img_mysql1.png)
+
+Verification des données chargées
+![Alt text](img/img_mysql2.png)
+![Alt text](img/img_mysql3.png)
+# Documentation et ressources utiles
 
 [Doc RabbitMQ](https://www.rabbitmq.com/tutorials/tutorial-one-python.html)
 
