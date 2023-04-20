@@ -2,7 +2,7 @@
 # Le projet - RabbitMQ
 
 ## Résumé 
-Ce projet à but pédagogique à pour but de mettre en pratique les notions d'ORM, de data streaming, d'environement local / containerisé en python.
+Ce projet à but pédagogique à pour intérêt de mettre en pratique les notions d'ORM, de data streaming, d'environement local / containerisé sous python.
 
 L'objectif est de simuler un scénario réel consistant à récupérer les logs d'un server web, les traiter et les stocker dans une base de données, et ce en temps réel.
 
@@ -12,6 +12,7 @@ L'objectif est de simuler un scénario réel consistant à récupérer les logs 
 ## Prérequis
 
 - Python 3.x
+- Git
 - Un outil de génération de conteneurs (type docker)
 - Docker Compose
 
@@ -49,7 +50,7 @@ pip install -r requirements.txt
 
 Pour renforcer la sécurité d'une application, vous ne devriez jamais mettre d'informatiosn sensibles en dur dans votre code.
 
-Pour ce faire nous utilisons un systeème de variables d'environnements, qui ne sont pas poussés dans les différents repo et jamais partagés. D'habitude nosu utilisons un fichier nommé `.env`
+Pour ce faire nous utilisons des variables d'environnements, qui ne sont pas poussés dans les différents repo et jamais partagés. Par defaut, nous utilisons un fichier nommé `.env`
 
 Afin d'utiliser l'application, vous devez renommer le fichier `.env.example` en `.env` et saisir les différentes variables, soit :
 ```bash
@@ -65,19 +66,19 @@ DB_ROOT_PASSWORD=""
 ``` 
 ## Services et utilisation
 
-L'application utilise 3 services pour fonctionner. Ils seront conteneurisés pour simplifier leur déploiement sur n'importe quelle système.
+L'application utilise 3 services pour fonctionner. Ils seront conteneurisés pour simplifier leur déploiement sur n'importe quel système.
 
 - `MySQL`
     - C'est la base de donnée cible qui stockera les logs traités
 - `PHPMyAdmin` (factultatif)
-    - C'est l'interface graphique de la base de donnée
+    - C'est l'interface graphique de la base de donnée MySQL
 - `RabbitMQ`
-    - C'est le service qui permet de 'streamer' les données depuis notre source (le server web) jusqu'à la desrtination (notre base MySQL)
+    - C'est le service qui permet de 'streamer' les données depuis notre source (le server web) jusqu'à la destination (notre base MySQL)
 
 ### Lancement des services
 
 Pour lancer ces 3 services :
-- vérifiez que vous êtes bien placés dans le dossiers contenant le fichier `docker-compose.yml`
+- vérifiez que vous êtes bien placés dans le dossier contenant le fichier `docker-compose.yml`
 - effectuer la commande suivante : 
 ```bash
 docker-compose up -d
@@ -89,15 +90,14 @@ Une fois les 3 services ci-dessus lancés, il faut suivre les étapes suivantes.
 
 #### 1- Lancer le server RabbitMR
 
-Exécuter le fichier python `server.py` afin de créer une connexion au serveur via un `channel` pour qu'il soit utilisable par les `producers` et `consummer`.
+Exécuter le fichier python `server.py` afin de créer une connexion au serveur via un `channel` afin qu'il soit utilisable par les `producers` et `consummer`.
 ```bash
 python server.py
 ```
 
-
 #### 2- Simuler les logs produit par le server web
 
-Exécuter le fichier python `logs-producer.py` afin de créer un `exchange` et des `queue`. Cela permet ensuite de publier les logs dans les `queue` et de les aiguiller correctement à l'aide de `routing_key`.
+Exécuter le fichier python `logs-producer.py` pour créer un `exchange` et des `queue`. Cela permetra ensuite de publier les logs dans les `queue` et de les aiguiller correctement à l'aide de `routing_key`.
 ```bash
 python logs-producer.py
 ```
@@ -108,8 +108,8 @@ Exécuter le fichier python `consumer.py` afin de consommer les logs en attente 
 ```bash
 python consumer.py
 ```
-Pour chaque queue, nous applicons des traitements particulier avant de pousser un log dans la base de données :
-- `process_msg_data_clean` : permet de 'parser' notre log à l'aide de fonctions et d'expressions régulière (RegEx) pour le stocker de manière structurée en base. Il pourra ainsi être facilement à des fins d'analyse, dashboarding ou ML.
+Pour chaque queue, nous appliquons des traitements particuliers avant de pousser un log dans la base de données :
+- `process_msg_data_clean` : permet de 'parser' notre log à l'aide de fonctions et d'expressions régulières (RegEx) pour le stocker de manière structurée en base. Il pourra ainsi être facilement utilisé à des fins d'analyse, dashboarding ou ML.
 - `process_raw_message` : permet de stoker notre log brut afin de ne pas le perdre.
 
 Toutes les fonctions de traitement sont dans le fichier `\functions\Myfunctions.py`
