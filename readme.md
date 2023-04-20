@@ -11,8 +11,9 @@ L'objectif est de simuler un scénario réel consistant à récupérer les logs 
 
 ## Prérequis
 
-- Python
+- Python 3.x
 - Un outil de génération de conteneurs (type docker)
+- Docker Compose
 
 
 ## Installation
