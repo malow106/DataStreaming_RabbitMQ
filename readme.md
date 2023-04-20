@@ -135,6 +135,7 @@ Visualisation de la publication des logs dans la queue (front montant) et de leu
 
 Visualisation des logs dans PHPMyAdmin dans les 2 tables
 
+## PHPMyAdmin interface
 ![Alt text](img/img_mysql1.png)
 
 Verification des données chargées
